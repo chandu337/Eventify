@@ -1,7 +1,6 @@
 import 'package:flutter_eventify/admin/create_events/model/create_event_model.dart';
 import 'package:flutter_eventify/admin/create_events/service/create_event_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 part 'create_event_provider.g.dart';
 
 @riverpod

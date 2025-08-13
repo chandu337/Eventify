@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class StudentProfileScreen extends StatefulWidget {
@@ -43,6 +44,11 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
       });
     }
   }
+
+  Future<void> logOut() async{
+    await Supabase.instance.client.auth.signOut();
+    
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,63 +61,85 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
           ? const Center(child: CircularProgressIndicator())
           : userData == null
             ? const Center(child: Text("No user data found."))
-            : Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Card(
-                elevation: 4,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(24.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const CircleAvatar(
-                          radius: 40,
-                          backgroundImage: AssetImage('assets/Student.webp'),
-                          backgroundColor: Colors.grey,
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          userData!['username'] ?? 'No Name',
-                          style: const TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          userData!['email'] ?? '',
-                          style: const TextStyle(
-                            fontSize: 14, color: Color.fromARGB(255, 101, 100, 100)),
-                        ),
-                        const SizedBox(height: 16),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            : Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Card(
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(24.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            Chip(
-                              label: Text("Role: ${userData!['role']}"),
-                              backgroundColor: Colors.blue[100],
+                            const CircleAvatar(
+                              radius: 40,
+                              backgroundImage: AssetImage('assets/Student.webp'),
+                              backgroundColor: Colors.grey,
                             ),
-                            Chip(
-                              label: Text("Year: ${userData!['year']}"),
-                              backgroundColor: Colors.green[100],
+                            const SizedBox(height: 16),
+                            Text(
+                              userData!['username'] ?? 'No Name',
+                              style: const TextStyle(
+                                fontSize: 22, fontWeight: FontWeight.bold),
                             ),
+                            const SizedBox(height: 8),
+                            Text(
+                              userData!['email'] ?? '',
+                              style: const TextStyle(
+                                fontSize: 14, color: Color.fromARGB(255, 101, 100, 100)),
+                            ),
+                            const SizedBox(height: 16),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Chip(
+                                  label: Text("Role: ${userData!['role']}"),
+                                  backgroundColor: Colors.blue[100],
+                                ),
+                                Chip(
+                                  label: Text("Year: ${userData!['year']}"),
+                                  backgroundColor: Colors.green[100],
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 24),
+                            Center(
+                              child: ElevatedButton.icon(
+                                onPressed: () {},
+                                icon: const Icon(Icons.edit),
+                                label: const Text("Edit Profile",style: TextStyle(color: Colors.white),),
+                                
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.deepPurple,  
+                                ),
+                              ),
+                            )
                           ],
-                        ),
-                        const SizedBox(height: 24),
-                        ElevatedButton.icon(
-                          onPressed: () {},
-                          icon: const Icon(Icons.edit),
-                          label: const Text("Edit Profile",style: TextStyle(color: Colors.white),),
-                          
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.deepPurple,  
-                          ),
-                        )
-                      ],
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                Center(
+                  
+                  child: ElevatedButton.icon(
+                    onPressed: () async{
+                      await logOut();
+                      if(mounted){
+                        context.go('/login');
+                      }
+                    }, 
+                    label: const Text("Sign Out",style: TextStyle(color: Colors.white),),
+                    icon: const Icon(Icons.logout),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,  
+                    ), 
+                  ),
+                )
+              ],
             ),
     );
   }

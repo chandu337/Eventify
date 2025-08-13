@@ -124,64 +124,62 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                         onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=>StudentEventDetailScreen(item: item))),
                         child: Card(
                           elevation: 2.0,
-                          child: Column(
-                            children: [
-                              Image.network(item.image),
-                              SizedBox(height:7,),
-                              Container(
-                                width: 60,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30),
-                                  color: Colors.blue
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Image.network(item.image),
+                                SizedBox(height:7,),
+                                Align(alignment: Alignment.topLeft,child: Text(item.club,style: TextStyle(color: Colors.white,fontSize: 17),)),
+                                SizedBox(height: 10,),
+                                Align(alignment: Alignment.topLeft,child: Text(item.title,style: TextStyle(fontSize: 17),)),
+                                SizedBox(height: 7,),
+                                Align(alignment: Alignment.topLeft,child: Text(DateFormat('yyyy-MM-dd EEEE').format(item.date),style: TextStyle(fontSize: 16),)),
+                                SizedBox(height: 8,),
+                                Row(
+                                  children: [
+                                    ElevatedButton(
+                                      onPressed: () async{
+                                        try {
+                                          await StudentStatusService.markStatus(
+                                            eventId: item.id!,
+                                            status: "Interested",
+                                          );
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(content: Text("Marked as Interested")),
+                                          );
+                                        } catch (e) {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(content: Text("Error: $e")),
+                                          );
+                                        }
+                                      }, 
+                                      style: ElevatedButton.styleFrom(backgroundColor: Colors.lightBlue),
+                                      child: Text("Interested",style: TextStyle(color: Colors.white),)),
+                                    SizedBox(width: 5,),
+                                    ElevatedButton(
+                                      onPressed: () async{
+                                        try {
+                                          await StudentStatusService.markStatus(
+                                            eventId: item.id!,
+                                            status: "Going",
+                                          );
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(content: Text("Marked as Going")),
+                                          );
+                                        } catch (e) {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(content: Text("Error: $e")),
+                                          );
+                                        }
+                                      },
+                                      style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                                      child: Text("Going",style: TextStyle(color: Colors.white),))
+                                  ],
                                 ),
-                                child: Align(alignment: Alignment.topLeft,child: Text(item.club,style: TextStyle(color: Colors.white,fontSize: 17),))
-                              ),
-                              SizedBox(height: 10,),
-                              Align(alignment: Alignment.topLeft,child: Text(item.title,style: TextStyle(fontSize: 17),)),
-                              SizedBox(height: 7,),
-                              Align(alignment: Alignment.topLeft,child: Text(DateFormat('yyyy-MM-dd EEEE').format(item.date),style: TextStyle(fontSize: 16),)),
-                              SizedBox(height: 8,),
-                              Row(
-                                children: [
-                                  ElevatedButton(
-                                    onPressed: () async{
-                                      try {
-                                        await StudentStatusService.markStatus(
-                                          eventId: item.id!,
-                                          status: "Interested",
-                                        );
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(content: Text("Marked as Interested")),
-                                        );
-                                      } catch (e) {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(content: Text("Error: $e")),
-                                        );
-                                      }
-                                    }, 
-                                    child: Text("Interested")),
-                                  SizedBox(width: 5,),
-                                  ElevatedButton(
-                                    onPressed: () async{
-                                      try {
-                                        await StudentStatusService.markStatus(
-                                          eventId: item.id!,
-                                          status: "Going",
-                                        );
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(content: Text("Marked as Going")),
-                                        );
-                                      } catch (e) {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(content: Text("Error: $e")),
-                                        );
-                                      }
-                                    },
-                                    child: Text("Going"))
-                                ],
-                              ),
-                              SizedBox(height: 10,),
-                            ],
+                                SizedBox(height: 10,),
+                              ],
+                            ),
                           ),
                         ),
                       );

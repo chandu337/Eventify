@@ -4,6 +4,7 @@ import 'package:flutter_eventify/admin/clubs.dart';
 import 'package:flutter_eventify/admin/create_events/create_events_screen.dart';
 import 'package:flutter_eventify/screens/login_screen.dart';
 import 'package:flutter_eventify/screens/register_screen.dart';
+import 'package:flutter_eventify/screens/splash_screen.dart';
 import 'package:flutter_eventify/student/student_bottom_bar.dart';
 import 'package:flutter_eventify/student/student_home_screen.dart';
 import 'package:flutter_eventify/student/student_profile_screen.dart';
@@ -27,7 +28,8 @@ final eventrouter = GoRouter(
     return null;
   },
   routes: [
-    GoRoute(path: "/", builder: (context,state)=> LoginScreen()),
+    GoRoute(path: "/", builder: (context,state)=>SplashScreen()),
+    GoRoute(path: "/login", builder: (context,state)=> LoginScreen()),
     GoRoute(path: "/register", builder:(context, state) => RegisterScreen(),),
     ShellRoute(
       builder: (context, state, child) {

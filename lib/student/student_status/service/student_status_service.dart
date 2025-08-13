@@ -33,11 +33,32 @@ class StudentStatusService {
   final supabase = Supabase.instance.client;
   final userId = supabase.auth.currentUser!.id;
 
-  await supabase.from('event_status').upsert({
+  final existing = await supabase
+      .from('event_status')
+      .select()
+      .eq('event_id', eventId)
+      .eq('user_id', userId)
+      .eq('status', status);
+
+  if (existing.isNotEmpty) {
+    print("Already marked as $status for this event. Skipping insert.");
+    return;
+  }
+
+  await supabase.from('event_status').insert({
     'user_id': userId,
     'event_id': eventId,
     'status': status,
   });
 }
+
+
+  static Future<void> deleteStatus({required String event_id,required String Status}) async{
+    final userId = Supabase.instance.client.auth.currentUser?.id;
+    if (userId == null) throw Exception("No logged in user");
+
+    final supabase = Supabase.instance.client;
+    await supabase.from("event_status").delete().eq("event_id", event_id).eq("user_id", userId).eq("status", Status);
+  }
 
 }
