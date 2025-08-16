@@ -34,7 +34,7 @@ class AdminBottomBar extends StatelessWidget {
         unselectedItemColor: Colors.blue, 
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home_filled),label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.create_new_folder_outlined),label: "Clubs"),
+          BottomNavigationBarItem(icon: Icon(Icons.celebration),label: "Clubs"),
           BottomNavigationBarItem(icon: Icon(Icons.add),label: "Create event"),
           BottomNavigationBarItem(icon: Icon(Icons.person),label: "Profile")
         ],

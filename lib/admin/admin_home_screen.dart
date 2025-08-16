@@ -30,7 +30,11 @@ class _AdminHomeScreenState extends ConsumerState<AdminHomeScreen> {
                       children: [
                         Row(
                           children: [
-                            Icon(Icons.event_available_rounded,color: Colors.white,),
+                            Container(
+                              padding: EdgeInsets.all(8 ),
+                              decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(20)),
+                              child: Icon(Icons.calendar_month,color: Colors.deepPurple,)
+                            ),
                             SizedBox(width: 5,),
                             Column(
                               children: [
@@ -43,15 +47,19 @@ class _AdminHomeScreenState extends ConsumerState<AdminHomeScreen> {
                         ),
                         Row(
                           children: [
-                            Icon(Icons.notifications_none_rounded,color: Colors.white,),
+                            Tooltip(message: "Clubs",child: IconButton(onPressed: ()=>context.go('/admin/clubs'),icon:Icon(Icons.celebration,color: Colors.white,))),
                             SizedBox(width: 5,),
-                            IconButton(onPressed: () {
-                              context.go('/admin/profile');
-                            }, icon: Icon(Icons.person,color: Colors.white,),)
+                            Tooltip(
+                              message: "Profile",
+                              child: IconButton(onPressed: () {
+                                context.go('/admin/profile');
+                              }, icon: Icon(Icons.person,color: Colors.white,),),
+                            )
                           ],
                         )
                       ],
                     ),
+                    SizedBox(height: 5,),
                     Container(
                       decoration: BoxDecoration(
                         color: const Color.fromARGB(255, 166, 140, 239),
@@ -99,6 +107,7 @@ class _AdminHomeScreenState extends ConsumerState<AdminHomeScreen> {
                   TextButton(
                     onPressed: ()=>context.go('/admin/createEvent'),
                     child: Container(
+                      height: 96,
                       decoration: BoxDecoration(
                         color: const Color.fromARGB(255, 99, 178, 243),
                         borderRadius: BorderRadius.circular(15),
@@ -107,7 +116,7 @@ class _AdminHomeScreenState extends ConsumerState<AdminHomeScreen> {
                       child: Column(
                         children: [
                           Icon(Icons.add,color: Colors.white,),
-                          SizedBox(height: 6.0,),
+                          SizedBox(height: 8.0,),
                           Text("Create Event",style: TextStyle(color: Colors.white,fontSize: 18),)
                         ],
                       ),
@@ -125,7 +134,6 @@ class _AdminHomeScreenState extends ConsumerState<AdminHomeScreen> {
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(14)),
               child: eventItemsAsync.when(
                 data: (items){
-                  print(items);
                   if(items.isEmpty){
                     return Text("No events available");
                   }
@@ -135,61 +143,124 @@ class _AdminHomeScreenState extends ConsumerState<AdminHomeScreen> {
                     itemBuilder: (context,index){
                       final item = items[index];
                       return GestureDetector(
-                        onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>EventDetailScreen(item: item)));
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EventDetailScreen(item: item),
+                            ),
+                          );
                         },
-                        
                         child: Card(
+                          elevation: 4,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
                           child: Padding(
-                            padding: const EdgeInsets.all(3.0),
+                            padding: const EdgeInsets.all(12),
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                ClipRect(child: Image.network(item.image)),
-                                SizedBox(height: 7,),
-                                Text(item.title,style: TextStyle(fontWeight: FontWeight.bold),),
-                                SizedBox(height: 7,),
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: Image.network(
+                                    item.image,
+                                    height: 180,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Container(
+                                    padding: EdgeInsets.all(8),
+                                    decoration: BoxDecoration(color: Colors.purpleAccent,borderRadius: BorderRadius.circular(10)),
+                                    child: Text(
+                                      item.club,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  item.title,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
                                 Row(
                                   children: [
-                                    Icon(Icons.date_range_rounded),
-                                    SizedBox(width: 4,),
-                                    Text(DateFormat('yyyy-MM-dd EEEE').format(item.date)),
+                                    const Icon(Icons.date_range_rounded, size: 18, color: Colors.deepPurple),
+                                    const SizedBox(width: 6),
+                                    Text(
+                                      DateFormat('yyyy-MM-dd EEEE').format(item.date),
+                                      style: TextStyle(color: Colors.grey[700]),
+                                    ),
                                   ],
                                 ),
-                                SizedBox(height: 7,),
+                                const SizedBox(height: 6),
                                 Row(
                                   children: [
-                                    Icon(Icons.location_on),
-                                    SizedBox(width: 3,),
-                                    Text(item.location),
+                                    const Icon(Icons.location_on, size: 18, color: Colors.redAccent),
+                                    const SizedBox(width: 6),
+                                    Text(
+                                      item.location,
+                                      maxLines: 1,
+                                      
+                                      style: TextStyle(color: Colors.grey[700]),
+                                    ),
                                   ],
                                 ),
-                                SizedBox(height: 10,),
+                                const SizedBox(height: 12),
                                 Row(
                                   children: [
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => AdminEditScreen(item: item),
+                                    Expanded(
+                                      child: ElevatedButton.icon(
+                                        onPressed: () {
+                                          Navigator.push(context,MaterialPageRoute(builder: (context) => AdminEditScreen(item: item),),);
+                                        },
+                                        icon: const Icon(Icons.edit, size: 18, color: Colors.white),
+                                        label: const Text(
+                                          "Edit",
+                                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                                        ),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.deepPurpleAccent,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(10),
                                           ),
-                                        );
-                                      },
-                                      style: ElevatedButton.styleFrom(backgroundColor:Colors.deepPurpleAccent,shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
-                                      child:Text("Edit",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                                        ),
+                                      ),
                                     ),
-                                    SizedBox(width: 5,),
-                                    ElevatedButton(onPressed:()async {
-                                      await ref.read(createEventItemProvider.notifier).deleteEvent(item.id!);
-  
-                                    },
-                                      
-                                      style: ElevatedButton.styleFrom(backgroundColor: Colors.red,shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
-                                      
-                                      child:Text("Delete", style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),  
+                                    const SizedBox(width: 10),
+                                    Expanded(
+                                      child: ElevatedButton.icon(
+                                        onPressed: () async {
+                                          await ref.read(createEventItemProvider.notifier).deleteEvent(item.id!);
+                                        },
+                                        icon: const Icon(Icons.delete, size: 18, color: Colors.white),
+                                        label: const Text(
+                                          "Delete",
+                                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                                        ),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.redAccent,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   ],
-                                )
+                                ),
                               ],
                             ),
                           ),

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+
 class ClubsScreen extends StatefulWidget {
   const ClubsScreen({super.key});
+
   @override
   State<ClubsScreen> createState() => _ClubsScreenState();
 }
+
 class _ClubsScreenState extends State<ClubsScreen> {
   @override
   Widget build(BuildContext context) {
@@ -37,6 +40,7 @@ class _ClubsScreenState extends State<ClubsScreen> {
         'image': 'https://www.shutterstock.com/image-vector/india-has-incredible-culture-diversity-600w-2237822423.jpg'
       },
     ];
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 84, 18, 197),
@@ -52,24 +56,52 @@ class _ClubsScreenState extends State<ClubsScreen> {
             ),
           ),
         ),
-        leading: Container(
-          child: Row(
-            children: [
-              SizedBox(width: 7,),
-              Container(
-                width: 40,
-                height: 40,
-                child: Icon(Icons.data_thresholding_rounded),
-                decoration:BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(30)
-                ),
+        titleSpacing: 0,
+        title: Row(
+          children: [
+            const SizedBox(width: 8),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(30),
               ),
-              SizedBox(width: 5,),
-              Text("Eventify",style: TextStyle(color: Colors.white,fontSize: 16),)
-            ],
-           ),
+              
+              child: Image.asset(
+                "assets/eventify.png",
+                height: 47,
+                width: 47,
+              ),
+            ),
+            const SizedBox(width: 10),
+            const Text(
+              "Eventify",
+              style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+            )
+          ],
         ),
+        actions: [
+          Tooltip(
+            message: "Search",
+            child: IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.search, color: Colors.white),
+            ),
+          ),
+          Tooltip(
+            message: "My Events",
+            child: IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.calendar_month, color: Colors.white),
+            ),
+          ),
+          Tooltip(
+            message: "Profile",
+            child: IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.person, color: Colors.white),
+            ),
+          ),
+        ],
       ),
       body: GridView.builder(
         padding: const EdgeInsets.all(12),
@@ -86,7 +118,7 @@ class _ClubsScreenState extends State<ClubsScreen> {
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             elevation: 4,
             child: Padding(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -94,7 +126,6 @@ class _ClubsScreenState extends State<ClubsScreen> {
                     borderRadius: BorderRadius.circular(12),
                     child: Image.network(
                       club['image'],
-                      height: 100,
                       width: double.infinity,
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) => Container(
@@ -104,7 +135,7 @@ class _ClubsScreenState extends State<ClubsScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 3),
                   Row(
                     children: [
                       Icon(club['icon'], color: club['color'], size: 20),
@@ -113,7 +144,7 @@ class _ClubsScreenState extends State<ClubsScreen> {
                         child: Text(
                           club['name'],
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 14,
                             fontWeight: FontWeight.bold,
                             color: club['color'],
                           ),
@@ -123,15 +154,13 @@ class _ClubsScreenState extends State<ClubsScreen> {
                     ],
                   ),
                   const SizedBox(height: 6),
-                  Expanded(
-                    child: Text(
-                      club['description'],
-                      style: const TextStyle(fontSize: 13, color: Colors.black87),
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                  Text(
+                    club['description'],
+                    style: const TextStyle(fontSize: 13, color: Colors.black87),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: 3),
                   Align(
                     alignment: Alignment.centerRight,
                     child: ElevatedButton.icon(
@@ -156,7 +185,7 @@ class _ClubsScreenState extends State<ClubsScreen> {
             ),
           );
         },
-      )
+      ),
     );
   }
 }

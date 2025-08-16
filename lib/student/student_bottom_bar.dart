@@ -33,7 +33,7 @@ class StudentBottomBar extends StatelessWidget {
         unselectedItemColor: Colors.white,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home),label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.celebration), label: "Events"),
+          BottomNavigationBarItem(icon: Icon(Icons.celebration), label: "My Events"),
           BottomNavigationBarItem(icon: Icon(Icons.palette), label:"Clubs"),
           BottomNavigationBarItem(icon: Icon(Icons.person),label: "Profile")
         ],

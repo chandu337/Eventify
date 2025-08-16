@@ -323,7 +323,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         children: [
                           Text("Already have an account?"),
                           TextButton(onPressed: (){
-                            context.go('/');
+                            context.go('/login');
                           }, child: Text("Login here",style: TextStyle(color: Colors.blue)))
                         ],
                       )

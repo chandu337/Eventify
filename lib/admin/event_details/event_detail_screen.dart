@@ -70,13 +70,13 @@ class _EventDetailScreenState extends ConsumerState<EventDetailScreen> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
-                      widget.item.title,
+                      widget.item.club,
                       style: TextStyle(color: Colors.deepPurple),
                     ),
                   ),
                   SizedBox(height: 8),
                   Text(
-                    '',
+                    widget.item.title,
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
@@ -113,36 +113,12 @@ class _EventDetailScreenState extends ConsumerState<EventDetailScreen> {
                     children: [
                       Icon(Icons.people, color: Colors.green),
                       SizedBox(width: 8),
-                      Text('127 Going'),
+                      Text('0 Going'),
                       SizedBox(width: 16),
-                      Text('245 Interested'),
+                      Text('0 Interested'),
                     ],
                   ),
                   SizedBox(height: 16),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: OutlinedButton(
-                          onPressed: () {},
-                          style: OutlinedButton.styleFrom(
-                            side: BorderSide(color: Colors.deepPurple),
-                          ),
-                          child: Text('Interested'),
-                        ),
-                      ),
-                      SizedBox(width: 8),
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.deepPurple,
-                          ),
-                          child: Text('Going',style: TextStyle(color: Colors.white),),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
                   Text(
                     'About This Event',
                     style: TextStyle(
@@ -172,10 +148,7 @@ class _EventDetailScreenState extends ConsumerState<EventDetailScreen> {
                           ),
                         ),
                         SizedBox(height: 8),
-                        Text('\u2022 Introduction to Machine Learning concepts'),
-                        Text('\u2022 Python libraries for AI (TensorFlow, Scikit-learn)'),
-                        Text('\u2022 Building your first neural network'),
-                        Text('\u2022 Real-world project implementation'),
+                        
                       ],
                     ),
                   ),
@@ -199,19 +172,9 @@ class _EventDetailScreenState extends ConsumerState<EventDetailScreen> {
                             ),
                             SizedBox(height: 4),
                             Text(widget.item.club),
-                            Text('Computer Science Department'),
-                            Text('2.4k members   15 events'),
                           ],
                         ),
-                        ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            foregroundColor: Colors.deepPurple,
-                            side: BorderSide(color: Colors.deepPurple),
-                          ),
-                          child: Text('Follow'),
-                        ),
+                        
                       ],
                     ),
                   ),
@@ -222,7 +185,7 @@ class _EventDetailScreenState extends ConsumerState<EventDetailScreen> {
                         child: SizedBox(
                           width: 250,
                           child: ElevatedButton(onPressed: (){},
-                            style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+                            style: ElevatedButton.styleFrom(backgroundColor: Colors.deepPurpleAccent),
                             child: Text("Edit",style: TextStyle(color: Colors.white),)),
                         ),
                       ),

@@ -36,23 +36,6 @@ class _EventDetailScreenState extends State<StudentEventDetailScreen> {
                     child: IconButton(onPressed:(){Navigator.pop(context);},icon: Icon(Icons.arrow_back, color: Colors.black)),
                   ),
                 ),
-                Positioned(
-                  top: 40,
-                  right: 16,
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: Colors.white,
-                        child: Icon(Icons.share, color: Colors.black),
-                      ),
-                      SizedBox(width: 8),
-                      CircleAvatar(
-                        backgroundColor: Colors.white,
-                        child: Icon(Icons.bookmark_border, color: Colors.black),
-                      ),
-                    ],
-                  ),
-                ),
               ],
             ),
             Padding(
@@ -67,13 +50,13 @@ class _EventDetailScreenState extends State<StudentEventDetailScreen> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
-                      widget.item.title,
+                      widget.item.club,
                       style: TextStyle(color: Colors.deepPurple),
                     ),
                   ),
                   SizedBox(height: 8),
                   Text(
-                    'AI & Machine Learning Workshop',
+                    widget.item.title,
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
@@ -100,8 +83,8 @@ class _EventDetailScreenState extends State<StudentEventDetailScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Computer Science Building'),
-                          Text('Room 201, Main Campus'),
+                          Text(widget.item.location),
+                          
                         ],
                       )
                     ],
@@ -111,36 +94,12 @@ class _EventDetailScreenState extends State<StudentEventDetailScreen> {
                     children: [
                       Icon(Icons.people, color: Colors.green),
                       SizedBox(width: 8),
-                      Text('127 Going'),
+                      Text('0 Going'),
                       SizedBox(width: 16),
-                      Text('245 Interested'),
+                      Text('0 Interested'),
                     ],
                   ),
                   SizedBox(height: 16),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: OutlinedButton(
-                          onPressed: () {},
-                          style: OutlinedButton.styleFrom(
-                            side: BorderSide(color: Colors.deepPurple),
-                          ),
-                          child: Text('Interested'),
-                        ),
-                      ),
-                      SizedBox(width: 8),
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.deepPurple,
-                          ),
-                          child: Text('Going',style: TextStyle(color: Colors.white),),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
                   Text(
                     'About This Event',
                     style: TextStyle(
@@ -170,10 +129,6 @@ class _EventDetailScreenState extends State<StudentEventDetailScreen> {
                           ),
                         ),
                         SizedBox(height: 8),
-                        Text('\u2022 Introduction to Machine Learning concepts'),
-                        Text('\u2022 Python libraries for AI (TensorFlow, Scikit-learn)'),
-                        Text('\u2022 Building your first neural network'),
-                        Text('\u2022 Real-world project implementation'),
                       ],
                     ),
                   ),
@@ -197,18 +152,7 @@ class _EventDetailScreenState extends State<StudentEventDetailScreen> {
                             ),
                             SizedBox(height: 4),
                             Text(widget.item.club),
-                            Text('Computer Science Department'),
-                            Text('2.4k members   15 events'),
                           ],
-                        ),
-                        ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            foregroundColor: Colors.deepPurple,
-                            side: BorderSide(color: Colors.deepPurple),
-                          ),
-                          child: Text('Follow'),
                         ),
                       ],
                     ),

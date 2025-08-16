@@ -11,7 +11,7 @@ class StudentEventsScreen extends ConsumerStatefulWidget{
   ConsumerState<StudentEventsScreen> createState()=>_StudentEventsScreen();
 }
 class _StudentEventsScreen extends ConsumerState<StudentEventsScreen>{
-  List<String> statusTabs = ['Interested','Going','Past'];
+  List<String> statusTabs = ['Interested','Going'];
   @override 
   Widget build(BuildContext context){
     final eventAsync = ref.watch(studentStatusListProvider);

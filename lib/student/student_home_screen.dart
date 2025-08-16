@@ -13,11 +13,11 @@ class StudentHomeScreen extends ConsumerStatefulWidget {
 }
 class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
   late Map<String,dynamic> userData;
-  List<String> events=['Today','Tech','Sports','Cultural','Music'];
+  List<String> events=['All','Tech','Sports','Cultural','Music'];
+  String selectedCategory = 'All';
   @override
   Widget build(BuildContext context) {
-    final EventItemsAsync = ref.watch(createStudentEventItemProvider);
-    print(EventItemsAsync);
+    final eventItemsAsync = ref.watch(createStudentEventItemProvider);
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -81,114 +81,204 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
             ),
             SizedBox(height: 20,),
             SizedBox(
-              height: 40,
+              height: 45,
               child: ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
                 scrollDirection: Axis.horizontal,
                 itemCount: events.length,
-                itemBuilder: (context,index){
-                return Container(
-                  margin: EdgeInsets.only(left: 20),
-                  child: ElevatedButton(
-                    onPressed: (){}, 
-                    style: ElevatedButton.styleFrom(                      
-                      padding: EdgeInsets.all(14),
-                      backgroundColor: const Color.fromARGB(255, 217, 214, 214),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
+                itemBuilder: (context, index) {
+                  final category = events[index];
+                  final isSelected = selectedCategory == category;
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: ChoiceChip(
+                      label: Text(
+                        category,
+                        style: TextStyle(
+                          color: isSelected ? Colors.white : Colors.black87,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      selected: isSelected,
+                      onSelected: (_) {
+                        setState(() => selectedCategory = category);
+                      },
+                      selectedColor: const Color.fromARGB(255, 91, 67, 225),
+                      backgroundColor: Colors.grey[300],
+                      showCheckmark: false,
                     ),
-                    child: Text(events[index], style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),),
-                ); 
-              }),
-            ),
-              SizedBox(height: 23,),
-              Padding(
-                padding: EdgeInsets.only(left: 25),
-                child: Align(alignment: Alignment.topLeft,
-                  child: Text("Upcoming Events",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 21),)
-                )
+                  );
+                },
               ),
-              Container(
-                padding: EdgeInsets.all(20),
-                child: EventItemsAsync.when(
-                  data: (items){
-                    if(items.isEmpty){
-                      return Center(child: Text("Empty"),);
-                    }
-                    return ListView.builder(
-                      shrinkWrap: true, 
-                      itemCount: items.length,
-                      itemBuilder: (context,index){
-                      final item = items[index];
+            ),
+            const SizedBox(height: 23),
+            Padding(
+              padding: const EdgeInsets.only(left: 25),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  "Events",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 21),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: eventItemsAsync.when(
+                data: (items) {
+                  if (items.isEmpty) {
+                    return const Center(child: Text("No events available"));
+                  }
+                  final filteredItems = selectedCategory == 'All'
+                      ? items
+                      : items
+                          .where((item) =>
+                              item.club.toLowerCase() ==
+                              selectedCategory.toLowerCase())
+                          .toList();
+
+                  if (filteredItems.isEmpty) {
+                    return const Center(child: Text("No events in this category"));
+                  }
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: filteredItems.length,
+                    itemBuilder: (context, index) {
+                      final item = filteredItems[index];
                       return GestureDetector(
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=>StudentEventDetailScreen(item: item))),
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                StudentEventDetailScreen(item: item),
+                          ),
+                        ),
                         child: Card(
-                          elevation: 2.0,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              children: [
-                                Image.network(item.image),
-                                SizedBox(height:7,),
-                                Align(alignment: Alignment.topLeft,child: Text(item.club,style: TextStyle(color: Colors.white,fontSize: 17),)),
-                                SizedBox(height: 10,),
-                                Align(alignment: Alignment.topLeft,child: Text(item.title,style: TextStyle(fontSize: 17),)),
-                                SizedBox(height: 7,),
-                                Align(alignment: Alignment.topLeft,child: Text(DateFormat('yyyy-MM-dd EEEE').format(item.date),style: TextStyle(fontSize: 16),)),
-                                SizedBox(height: 8,),
-                                Row(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          elevation: 4,
+                          margin: const EdgeInsets.symmetric(vertical: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ClipRRect(
+                                borderRadius: const BorderRadius.vertical(
+                                  top: Radius.circular(15)),
+                                child: Image.network(
+                                  item.image,
+                                  height: 180,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    ElevatedButton(
-                                      onPressed: () async{
-                                        try {
-                                          await StudentStatusService.markStatus(
-                                            eventId: item.id!,
-                                            status: "Interested",
-                                          );
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            SnackBar(content: Text("Marked as Interested")),
-                                          );
-                                        } catch (e) {
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            SnackBar(content: Text("Error: $e")),
-                                          );
-                                        }
-                                      }, 
-                                      style: ElevatedButton.styleFrom(backgroundColor: Colors.lightBlue),
-                                      child: Text("Interested",style: TextStyle(color: Colors.white),)),
-                                    SizedBox(width: 5,),
-                                    ElevatedButton(
-                                      onPressed: () async{
-                                        try {
-                                          await StudentStatusService.markStatus(
-                                            eventId: item.id!,
-                                            status: "Going",
-                                          );
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            SnackBar(content: Text("Marked as Going")),
-                                          );
-                                        } catch (e) {
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            SnackBar(content: Text("Error: $e")),
-                                          );
-                                        }
-                                      },
-                                      style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                                      child: Text("Going",style: TextStyle(color: Colors.white),))
+                                    Text(
+                                      item.club,
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color:  const Color.fromARGB(255, 91, 67, 225),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 6),
+                                    Text(
+                                      item.title,
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 6),
+                                    Row(
+                                      children: [
+                                        const Icon(Icons.calendar_today,
+                                            size: 16, color: Colors.grey),
+                                        const SizedBox(width: 5),
+                                        Text(
+                                          DateFormat('yyyy-MM-dd EEEE')
+                                              .format(item.date),
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 12),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: ElevatedButton(
+                                            onPressed: () async {
+                                              try {
+                                                await StudentStatusService.markStatus(
+                                                  eventId: item.id!,
+                                                  status: "Interested",
+                                                );
+                                                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Marked as Interested")),);
+                                              } catch (e) {
+                                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content:Text("Error: $e")),);
+                                              }
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Colors.lightBlue,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                            ),
+                                            child: const Text("Interested",style: TextStyle(color: Colors.white),),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Expanded(
+                                          child: ElevatedButton(
+                                            onPressed: () async {
+                                              try {
+                                                await StudentStatusService
+                                                    .markStatus(
+                                                  eventId: item.id!,
+                                                  status: "Going",
+                                                );
+                                                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Marked as Going")),);
+                                              } catch (e) {
+                                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content:Text("Error: $e")),);
+                                              }
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Colors.green,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                            ),
+                                            child: const Text("Going",style: TextStyle(color: Colors.white),),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ],
                                 ),
-                                SizedBox(height: 10,),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       );
-                    }
+                    },
                   );
-                }, 
-              error: (err,_)=>Text("Err:$err"), 
-              loading: ()=>Center(child: CircularProgressIndicator(),)),
-            )
+                },
+                error: (err, _) => Text("Error: $err"),
+                loading: () => const Center(child: CircularProgressIndicator()),
+              ),
+            ),
           ],
         ),
       ),

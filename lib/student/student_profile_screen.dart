@@ -19,7 +19,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
   }
   Future<void> fetchUserData()async {
     try{
-      final userId = await Supabase.instance.client.auth.currentUser?.id;
+      final userId = Supabase.instance.client.auth.currentUser?.id;
       if(userId != null){
         final response = await Supabase.instance.client.from("profile").select().eq('id', userId).maybeSingle();
         if(response != null){
@@ -29,7 +29,6 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
           });
         }
         else{
-          print("No user data found.");
           setState(() {
             userData = null;
             isLoading = false;
@@ -38,7 +37,6 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
       }
     }
     catch (e) {
-      print("Error fetching user data: $e");
       setState(() {
         isLoading = false;
       });
