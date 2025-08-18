@@ -58,6 +58,7 @@ class _StudentEventsScreen extends ConsumerState<StudentEventsScreen>{
                                 onPressed: () async{
                                   if (event.event_id != null) {
                                     await StudentStatusService.deleteStatus(event_id: '${event.event_id}', Status: '${event.status}', );
+                                    ref.refresh(studentStatusListProvider);
                                   }
                                   print("Event removed from Interested");
                                 },
