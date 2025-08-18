@@ -88,18 +88,18 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                             Text(
                               userData!['email'] ?? '',
                               style: const TextStyle(
-                                fontSize: 14, color: Color.fromARGB(255, 101, 100, 100)),
+                                fontSize: 14, color: Color.fromARGB(255, 57, 57, 57), fontWeight: FontWeight.w800),
                             ),
                             const SizedBox(height: 16),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Chip(
-                                  label: Text("Role: ${userData!['role']}"),
+                                  label: Text("Role: ${userData!['role']}",style: TextStyle(fontWeight: FontWeight.w600),),
                                   backgroundColor: Colors.blue[100],
                                 ),
                                 Chip(
-                                  label: Text("Year: ${userData!['year']}"),
+                                  label: Text("Year: ${userData!['year']}",style: TextStyle(fontWeight: FontWeight.w600)),
                                   backgroundColor: Colors.green[100],
                                 ),
                               ],
@@ -107,7 +107,9 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                             const SizedBox(height: 24),
                             Center(
                               child: ElevatedButton.icon(
-                                onPressed: () {},
+                                onPressed: () {
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Will be available soon")));
+                                },
                                 icon: const Icon(Icons.edit),
                                 label: const Text("Edit Profile",style: TextStyle(color: Colors.white),),
                                 

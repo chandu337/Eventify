@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_eventify/admin/clubs/club_detail_screen.dart';
 
 class ClubsScreen extends StatefulWidget {
   const ClubsScreen({super.key});
@@ -15,6 +16,7 @@ class _ClubsScreenState extends State<ClubsScreen> {
         'name': 'Music Club',
         'icon': Icons.music_note,
         'description': 'Explore your passion for rhythm and melody with our music club.',
+        'about' : 'The Music Club is the heart of rhythm and melody on campus, bringing together singers, instrumentalists, and music enthusiasts. It provides a platform for students to explore different genres of music, collaborate in jam sessions, and showcase their talent in events and competitions. Whether you’re passionate about classical, rock, or contemporary beats, the club helps nurture creativity while spreading the joy of music across the college community.',
         'color': Colors.pinkAccent,
         'image': 'https://i.ytimg.com/vi/btv1MvqD9AM/maxresdefault.jpg'
       },
@@ -22,6 +24,7 @@ class _ClubsScreenState extends State<ClubsScreen> {
         'name': 'Tech Club',
         'icon': Icons.computer,
         'description': 'A hub for coders, designers, and tech enthusiasts.',
+        'about' : 'The Tech Club is a hub for innovation, coding, and technological exploration. It connects students who are passionate about programming, app and web development, robotics, and cutting-edge fields like AI and cybersecurity. Through workshops, hackathons, and knowledge-sharing sessions, members not only sharpen their technical skills but also work on real-world projects. The club’s mission is to inspire innovation and prepare students for future opportunities in the tech industry.',
         'color': Colors.blueAccent,
         'image': 'https://images.unsplash.com/photo-1511376777868-611b54f68947'
       },
@@ -29,6 +32,7 @@ class _ClubsScreenState extends State<ClubsScreen> {
         'name': 'Sports Club',
         'icon': Icons.sports_soccer,
         'description': 'Join to compete, stay fit, and celebrate athleticism.',
+        'about':'The Sports Club is dedicated to promoting fitness, teamwork, and a spirit of healthy competition. It offers opportunities for students to participate in a wide range of sports such as football, cricket, basketball, athletics, and indoor games. The club organizes tournaments, training sessions, and fitness programs that help students stay active while developing discipline and leadership skills. It’s the perfect place for anyone who enjoys sports, whether for competition or recreation.',
         'color': Colors.green,
         'image': 'https://t3.ftcdn.net/jpg/07/07/61/40/360_F_707614083_bdideeFZ4Mm3azikIT03XOfyO6d39t0X.jpg'
       },
@@ -36,6 +40,7 @@ class _ClubsScreenState extends State<ClubsScreen> {
         'name': 'Cultural Club',
         'icon': Icons.theater_comedy,
         'description': 'Experience art, drama, dance, and diverse cultures.',
+        'about': 'The Cultural Club is a celebration of diversity, creativity, and artistic expression. It serves as a stage for students to showcase their talents in drama, dance, art, literature, and traditional performances. From organizing cultural festivals to hosting workshops and competitions, the club fosters unity and encourages appreciation of different cultures. It plays a key role in building confidence, creativity, and teamwork among its members.',
         'color': Colors.orange,
         'image': 'https://www.shutterstock.com/image-vector/india-has-incredible-culture-diversity-600w-2237822423.jpg'
       },
@@ -165,9 +170,7 @@ class _ClubsScreenState extends State<ClubsScreen> {
                     alignment: Alignment.centerRight,
                     child: ElevatedButton.icon(
                       onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Viewing ${club['name']}")),
-                        );
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>ClubDetailsScreen(club: club)));
                       },
                       icon: const Icon(Icons.arrow_forward, size: 16, color: Colors.white),
                       label: const Text("Explore Club", style: TextStyle(fontSize: 12, color: Colors.white)),

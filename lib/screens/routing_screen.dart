@@ -1,6 +1,7 @@
 import 'package:flutter_eventify/admin/admin_bottom_bar.dart';
+import 'package:flutter_eventify/admin/admin_event_screen.dart';
 import 'package:flutter_eventify/admin/admin_home_screen.dart';
-import 'package:flutter_eventify/admin/clubs.dart';
+import 'package:flutter_eventify/admin/clubs/clubs.dart';
 import 'package:flutter_eventify/admin/create_events/create_events_screen.dart';
 import 'package:flutter_eventify/screens/login_screen.dart';
 import 'package:flutter_eventify/screens/register_screen.dart';
@@ -31,6 +32,7 @@ final eventrouter = GoRouter(
     GoRoute(path: "/", builder: (context,state)=>SplashScreen()),
     GoRoute(path: "/login", builder: (context,state)=> LoginScreen()),
     GoRoute(path: "/register", builder:(context, state) => RegisterScreen(),),
+    GoRoute(path: "/myEvents", builder: (context, state)=>AdminEventScreen()),
     ShellRoute(
       builder: (context, state, child) {
         return AdminBottomBar(child: child);

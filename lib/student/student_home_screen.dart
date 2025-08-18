@@ -53,7 +53,16 @@ class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
                       ),
                       Row(
                         children: [
-                          Tooltip(message: 'Search',child: IconButton(onPressed: () {}, icon: Icon(Icons.search),color: Colors.white)),
+                          Tooltip(
+                            message: 'Search',
+                            child: IconButton(
+                              onPressed: () {
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("This feature will be available in future")));
+                              }, 
+                              icon: const Icon(Icons.search),
+                              color: Colors.white
+                            )
+                          ),
                           SizedBox(width: 5,),
                           Tooltip(
                             message: 'My Events',
