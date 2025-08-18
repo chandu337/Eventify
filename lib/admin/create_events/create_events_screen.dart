@@ -148,7 +148,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                 ElevatedButton(
                   onPressed:(){
                     _validateAndSubmit();
-                    context.pop();
+                    context.push("/admin/home");
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
