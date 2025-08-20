@@ -37,7 +37,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       );
       final userId = authres.user?.id;
       if (userId != null) {
-        await Supabase.instance.client.from('profile').insert({
+        await Supabase.instance.client.from('profile').upsert({
           'id': userId,
           'username': username,
           'email': email,
